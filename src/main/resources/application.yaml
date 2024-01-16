@@ -1,0 +1,8 @@
+app:
+  portal:
+    reg:
+      selfDescriptionUrl: ${portalRegSDUrl:https://portal-backend.cx.the-sense.io/api/administration/registration/clearinghouse/selfDescription}
+    client:
+      id: ${portalClientId:sa-cl2-01}
+      secret: ${portalClientSecret:xxxxxx}
+      tokenUrl: ${tokeUrl:https://localhost:8080/auth/realms/CX-Central/protocol/openid-connect/token}
