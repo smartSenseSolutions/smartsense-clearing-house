@@ -1,0 +1,40 @@
+
+replicaCount: 1
+
+image:
+  repository: clearing-house
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+
+serviceAccount:
+  create: false
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  hosts:
+    - host: clearing-house.cx.the-sense.io
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: clearing-house-tls
+      hosts:
+        - clearing-house.cx.the-sense.io
+
+envs:
+  APPLICATION_PORT: 8080
+  KEYCLOAK_REALM: "CX-Central"
+  AUTH_SERVER_URL: "https://centralidp.cx.the-sense.io/auth"
+
+
+secrets:
+  KEYCLOAK_CLIENT_ID: "<path:clearing-house/data/idp#client-id>"
+  KEYCLOAK_CLIENT_SECRET: "<path:clearing-house/data/idp#client-secret>"
