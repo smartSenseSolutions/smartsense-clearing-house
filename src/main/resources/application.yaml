@@ -1,8 +1,8 @@
 app:
   portal:
     reg:
-      selfDescriptionUrl: ${portalRegSDUrl:https://portal-backend.cx.the-sense.io/api/administration/registration/clearinghouse/selfDescription}
+      selfDescriptionUrl: ${PORTAL_REGI_SD_URL:https://localhost:8089/api/administration/registration/clearinghouse/selfDescription}
     client:
-      id: ${portalClientId:sa-cl2-01}
-      secret: ${portalClientSecret:xxxxxx}
-      tokenUrl: ${tokeUrl:https://localhost:8080/auth/realms/CX-Central/protocol/openid-connect/token}
+      id: ${KEYCLOAK_CLIENT_ID:sa-cl2-01}
+      secret: ${KEYCLOAK_CLIENT_SECRET:xxxxx}
+      tokenUrl: ${AUTH_SERVER_TOKEN_URL:https://localhost:8000/auth/realms/CX-Central/protocol/openid-connect/token}
