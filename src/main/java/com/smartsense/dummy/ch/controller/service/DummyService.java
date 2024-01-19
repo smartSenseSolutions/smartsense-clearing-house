@@ -1,4 +1,4 @@
-package com.smartsense.dummy.ch.controller;
+package com.smartsense.dummy.ch.controller.service;
 
 import com.smartsense.dummy.ch.dto.ClearinghouseResponseData;
 import com.smartsense.dummy.ch.dto.ClearinghouseResponseStatus;

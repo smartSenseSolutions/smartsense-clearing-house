@@ -18,18 +18,11 @@ import java.util.List;
 
 @SpringBootApplication
 @EnableAsync
-public class ClearingHouseApplication implements WebMvcConfigurer {
+public class ClearingHouseApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ClearingHouseApplication.class, args);
 	}
-
-	@Override
-	public void configureMessageConverters(List<HttpMessageConverter<?>> messageConverters) {
-		messageConverters.add(new MappingJackson2HttpMessageConverter());
-	}
-
-
 
 	@Bean
 	public RestTemplate getRestTemplate(){
