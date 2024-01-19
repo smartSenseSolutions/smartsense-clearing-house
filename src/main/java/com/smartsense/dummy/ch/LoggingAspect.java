@@ -37,26 +37,26 @@ public class LoggingAspect {
         String targetClass = joinPoint.getTarget().getClass().getSimpleName();
         String targetMethod = joinPoint.getSignature().getName();
         Thread currentThread = Thread.currentThread();
-        //Map<String, Object> parameters = getParameters(joinPoint);
+        Map<String, Object> parameters = getParameters(joinPoint);
         String ipAddress = request.getHeader("X-FORWARDED-FOR");
         if (ipAddress == null) {
             ipAddress = request.getRemoteAddr();
         }
-            /*log.info("==> path(s): {}, Class: {}, method(s): {}, arguments: {}, Thread :{}, IpAddress :{} ",
-                    request.getRequestURL(), targetClass, targetMethod, mapper.writeValueAsString(parameters), currentThreadId, ipAddress);*/
+            log.info("==> path(s): {}, Class: {}, method(s): {}, arguments: {}, Thread :{}, IpAddress :{} ",
+                    request.getRequestURL(), targetClass, targetMethod, mapper.writeValueAsString(parameters), currentThread.getId(), ipAddress);
 
         log.info("==> Request : {}, Class: {}, method(s): {}, Thread :{}, IpAddress :{} ",
                 request.getRequestURL(), targetClass, targetMethod, currentThread.getId(), ipAddress);
 
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        Object response;
+        Object response= null;
         try {
             response = joinPoint.proceed();
         } finally {
             stopWatch.stop();
-            /*log.info("<== Responding :{} in time:{}, Thread :{} ",
-                    mapper.writeValueAsString(entity), stopWatch.getTotalTimeMillis(), currentThreadId);*/
+            log.info("<== Responding :{} in time:{}, Thread :{} ",
+                    mapper.writeValueAsString(response), stopWatch.getTotalTimeMillis(), currentThread.getId());
             log.info("<== Responding in time:{} ms, Thread :{} ", stopWatch.getTotalTimeMillis(), currentThread.getId());
         }
         return response;

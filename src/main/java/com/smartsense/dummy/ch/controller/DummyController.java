@@ -3,6 +3,7 @@ package com.smartsense.dummy.ch.controller;
 import com.smartsense.dummy.ch.dto.Oath2ClientDTO;
 import com.smartsense.dummy.ch.dto.SelfDescriptionResponseData;
 import com.smartsense.dummy.ch.dto.SelfDescriptionStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 public class DummyController {
 
@@ -36,7 +38,7 @@ public class DummyController {
 
     @PostMapping("/api/v1/validation")
     public void mockValidation(@RequestBody Map<String,Object> map){
-
+        log.info("==> Request : Params:{}",map);
     }
 
     @PostMapping("/api/v1/compliance")
