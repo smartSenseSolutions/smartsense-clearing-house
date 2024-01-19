@@ -53,6 +53,7 @@ public class DummyService {
         restTemplate.exchange(callBack, HttpMethod.POST, requestEntity,Object.class);
     }
 
+    @Async
     public void portalCallBackRegistration(String externalId){
         SelfDescriptionResponseData responseData = new SelfDescriptionResponseData(externalId,"DUMMT APPROVAL","TEST DOCUMENT", SelfDescriptionStatus.Confirm);
         HttpHeaders headers = new HttpHeaders();
