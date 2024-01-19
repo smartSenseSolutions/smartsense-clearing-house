@@ -56,7 +56,8 @@ public class DummyService {
     @Async
     public void portalCallBackRegistration(String externalId, Map<String,Object> map){
         log.info("==> Request : portalCallBackRegistration:{}",map);
-        SelfDescriptionResponseData responseData = new SelfDescriptionResponseData(externalId,"DUMMT APPROVAL","TEST DOCUMENT", SelfDescriptionStatus.Confirm);
+        SelfDescriptionResponseData responseData = new SelfDescriptionResponseData(externalId,"DUMMT APPROVAL","{ \"test\": true }", SelfDescriptionStatus.Confirm);
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(generateToken());
