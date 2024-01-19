@@ -36,8 +36,10 @@ public class DummyController {
     private String portalClientSecret;
 
     @PostMapping("/api/v1/validation")
-    public void mockValidation(@RequestBody Map<String,Object> map){
+    public void mockValidation(@RequestBody Map<String,Object> map) throws InterruptedException {
         log.info("==> Request : Params:{}",map);
+
+        Thread.sleep(10000L);
         String callBack = map.get("callbackUrl")+"";
         Map<String,Object> participantDetailsMap=(Map<String, Object>) map.get("participantDetails");
         String bpn =participantDetailsMap.get("bpn")+"";
