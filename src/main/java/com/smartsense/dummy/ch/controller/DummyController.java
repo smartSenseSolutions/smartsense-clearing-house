@@ -1,8 +1,6 @@
 package com.smartsense.dummy.ch.controller;
 
-import com.smartsense.dummy.ch.dto.Oath2ClientDTO;
-import com.smartsense.dummy.ch.dto.SelfDescriptionResponseData;
-import com.smartsense.dummy.ch.dto.SelfDescriptionStatus;
+import com.smartsense.dummy.ch.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +37,17 @@ public class DummyController {
     @PostMapping("/api/v1/validation")
     public void mockValidation(@RequestBody Map<String,Object> map){
         log.info("==> Request : Params:{}",map);
+        String callBack = map.get("callbackUrl")+"";
+        Map<String,Object> participantDetailsMap=(Map<String, Object>) map.get("participantDetails");
+        String bpn =participantDetailsMap.get("bpn")+"";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(generateToken());
+        ClearinghouseResponseData callBackResponse = new ClearinghouseResponseData(bpn, ClearinghouseResponseStatus.CONFIRM,"SUccess");
+
+        HttpEntity<Object> requestEntity =new HttpEntity<>(callBackResponse, headers);
+        restTemplate.exchange(callBack, HttpMethod.POST, requestEntity,Object.class);
     }
 
     @PostMapping("/api/v1/compliance")
