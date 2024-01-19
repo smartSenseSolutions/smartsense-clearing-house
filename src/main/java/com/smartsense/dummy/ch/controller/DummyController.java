@@ -7,12 +7,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -69,14 +70,23 @@ public class DummyController {
         HttpEntity<Object> requestEntity =new HttpEntity<>(responseData, headers);
         restTemplate.exchange(portalRegSDUrl, HttpMethod.POST, requestEntity,Object.class);
     }
-
+    public MappingJackson2HttpMessageConverter getMappingJackson2HttpMessageConverter() {
+        MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
+        mappingJackson2HttpMessageConverter.setSupportedMediaTypes(Collections.singletonList(MediaType.APPLICATION_FORM_URLENCODED));
+        return mappingJackson2HttpMessageConverter;
+    }
     public String generateToken(){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf(MediaType.APPLICATION_FORM_URLENCODED_VALUE));
 
-        Oath2ClientDTO tokenRequest = new Oath2ClientDTO(portalClientId,portalClientSecret,"client_credentials");
-        HttpEntity<Object> requestEntity =new HttpEntity<>(tokenRequest, headers);
-        ResponseEntity<Map<String, Object>> exchange = restTemplate.exchange(keycloakTokenUrl, HttpMethod.POST, requestEntity, new ParameterizedTypeReference<Map<String, Object>>() {
+        var data = new  LinkedMultiValueMap();
+        data.put("client_id",List.of(portalClientId));
+        data.put("client_secret",List.of(portalClientSecret));
+        data.put("grant_type",List.of("client_credentials"));
+
+        HttpEntity<Object> requestEntity =new HttpEntity<>(data, headers);
+
+        ResponseEntity<Map<String, Object>> exchange = restTemplate.exchange(keycloakTokenUrl, HttpMethod.POST, requestEntity, new ParameterizedTypeReference<>() {
         });
 
         Map<String, Object> response = exchange.getBody();
