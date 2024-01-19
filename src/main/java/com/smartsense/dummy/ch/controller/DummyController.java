@@ -39,7 +39,7 @@ public class DummyController {
     public void mockValidation(@RequestBody Map<String,Object> map) throws InterruptedException {
         log.info("==> Request : Params:{}",map);
 
-        Thread.sleep(10000L);
+        Thread.sleep(70000L);
         String callBack = map.get("callbackUrl")+"";
         Map<String,Object> participantDetailsMap=(Map<String, Object>) map.get("participantDetails");
         String bpn =participantDetailsMap.get("bpn")+"";
