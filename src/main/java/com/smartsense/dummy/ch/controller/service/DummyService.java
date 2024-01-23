@@ -84,7 +84,7 @@ public class DummyService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(generateToken());
+        //headers.setBearerAuth(generateToken());
         try {
             HttpEntity<Object> requestEntity = new HttpEntity<>(responseData, headers);
             ResponseEntity<Object> exchange = restTemplate.exchange(portalRegSDUrl, HttpMethod.POST, requestEntity, Object.class);
@@ -97,6 +97,7 @@ public class DummyService {
                 DummyService.log.info("==> Retrying  count exceed then limit currentRetryCount: {}, limit:{}", currentRetry, retryCount);
             }
         } catch (HttpClientErrorException ce) {
+            DummyService.log.info("error response :{}", ce.getMessage());
             if (ce.getStatusCode().isError() && currentRetry <= retryCount) {
                 currentRetry++;
                 DummyService.log.info("==> Retrying  PortalBack for /api/v1/compliance Retrycount: {}", currentRetry);
