@@ -45,7 +45,7 @@ public class DummyService {
     private String portalClientSecret;
 
     @Async
-    public void callBack(Map<String, Object> map) {
+    public void callBack(Map<String, Object> map) throws InterruptedException {
         DummyService.log.info("==> Request : CallBack execute:");
         String callBack = map.get("callbackUrl") + "";
         Map<String, Object> participantDetailsMap = (Map<String, Object>) map.get("participantDetails");
@@ -53,7 +53,7 @@ public class DummyService {
         callBackForValidation(bpn, callBack, 0);
     }
 
-    public void callBackForValidation(String bpn, String callBack, int currentRetry) {
+    public void callBackForValidation(String bpn, String callBack, int currentRetry) throws InterruptedException {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
@@ -65,6 +65,7 @@ public class DummyService {
             if ((exchange.getStatusCode().isError()) && currentRetry <= retryCount) {
                 currentRetry++;
                 DummyService.log.info("==> Retrying  PortalBack for /api/v1/validation Retrycount: {}", currentRetry);
+                Thread.sleep(5000L);
                 callBackForValidation(bpn, callBack, currentRetry);
             } else if ((exchange.getStatusCode().isError()) && currentRetry > retryCount) {
                 DummyService.log.info("==> Retrying  count exceed then limit currentRetryCount: {}, limit:{}", currentRetry, retryCount);
@@ -73,15 +74,18 @@ public class DummyService {
             if (ce.getStatusCode().isError() && currentRetry <= retryCount) {
                 currentRetry++;
                 DummyService.log.info("==> Retrying  PortalBack for /api/v1/validation Retrycount: {}", currentRetry);
+                Thread.sleep(5000L);
                 callBackForValidation(bpn, callBack, currentRetry);
             } else if (ce.getStatusCode().isError() && currentRetry > retryCount) {
                 DummyService.log.info("==> Retrying  count exceed then limit currentRetryCount: {}, limit:{}", currentRetry, retryCount);
             }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Async
-    public void portalCallBackRegistration(String externalId, Map<String, Object> map, int currentRetry) {
+    public void portalCallBackRegistration(String externalId, Map<String, Object> map, int currentRetry) throws InterruptedException {
         DummyService.log.info("==> Request : portalCallBackRegistration:{} , CurrentRetry:{}", map, currentRetry);
         SelfDescriptionResponseData responseData = new SelfDescriptionResponseData(externalId, "DUMMT APPROVAL", "{ \"test\": true }", SelfDescriptionStatus.Confirm);
 
@@ -98,6 +102,7 @@ public class DummyService {
             if ((exchange.getStatusCode().isError()) && currentRetry <= retryCount) {
                 currentRetry++;
                 DummyService.log.info("==> Retrying  PortalBack for /api/v1/compliance Retrycount: {}", currentRetry);
+                Thread.sleep(5000L);
                 portalCallBackRegistration(externalId, map, currentRetry);
             } else if ((exchange.getStatusCode().isError()) && currentRetry > retryCount) {
                 DummyService.log.info("==> Retrying  count exceed then limit currentRetryCount: {}, limit:{}", currentRetry, retryCount);
@@ -107,10 +112,13 @@ public class DummyService {
             if (ce.getStatusCode().isError() && currentRetry <= retryCount) {
                 currentRetry++;
                 DummyService.log.info("==> Retrying  PortalBack for /api/v1/compliance Retrycount: {}", currentRetry);
+                Thread.sleep(5000L);
                 portalCallBackRegistration(externalId, map, currentRetry);
             } else if (ce.getStatusCode().isError() && currentRetry > retryCount) {
                 DummyService.log.info("==> Retrying  count exceed then limit currentRetryCount: {}, limit:{}", currentRetry, retryCount);
             }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
