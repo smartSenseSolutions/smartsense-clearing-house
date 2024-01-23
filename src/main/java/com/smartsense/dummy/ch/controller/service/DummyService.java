@@ -29,6 +29,9 @@ public class DummyService {
     @Value("${app.portal.reg.selfDescriptionUrl}")
     private String portalRegSDUrl;
 
+    @Value("${app.portal.connector.selfDescriptionUrl}")
+    private String portalConnectorSDUrl;
+
     @Value("${app.retryCount}")
     private Integer retryCount;
 
@@ -87,7 +90,10 @@ public class DummyService {
         //headers.setBearerAuth(generateToken());
         try {
             HttpEntity<Object> requestEntity = new HttpEntity<>(responseData, headers);
-            ResponseEntity<Object> exchange = restTemplate.exchange(portalRegSDUrl, HttpMethod.POST, requestEntity, Object.class);
+
+            Map<String, Object> credentialMap = (Map<String, Object>) map.get("credentialSubject");
+            String url = credentialMap != null && credentialMap.get("type").equals("ServiceOffering") ? portalConnectorSDUrl : portalRegSDUrl;
+            ResponseEntity<Object> exchange = restTemplate.exchange(url, HttpMethod.POST, requestEntity, Object.class);
 
             if ((exchange.getStatusCode().isError()) && currentRetry <= retryCount) {
                 currentRetry++;

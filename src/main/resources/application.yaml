@@ -2,6 +2,8 @@ app:
   portal:
     reg:
       selfDescriptionUrl: ${PORTAL_REGI_SD_URL:https://localhost:8089/api/administration/registration/clearinghouse/selfDescription}
+    connector:
+      selfDescriptionUrl: ${PORTAL_CONNECTOR_SD_URL:https://localhost:8089/api/administration/Connectors/clearinghouse/selfDescription}
     client:
       id: ${KEYCLOAK_CLIENT_ID:sa-cl2-01}
       secret: ${KEYCLOAK_CLIENT_SECRET:xxxxx}
