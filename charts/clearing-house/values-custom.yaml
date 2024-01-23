@@ -33,6 +33,7 @@ envs:
   APPLICATION_PORT: 8080
   AUTH_SERVER_TOKEN_URL: "https://centralidp.cx.the-sense.io/auth/realms/CX-Central/protocol/openid-connect/token"
   PORTAL_REGI_SD_URL: "https://portal-backend.cx.the-sense.io/api/administration/registration/clearinghouse/selfDescription"
+  RETRY_COUNT: 5
 
 
 secrets:

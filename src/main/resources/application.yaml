@@ -6,3 +6,4 @@ app:
       id: ${KEYCLOAK_CLIENT_ID:sa-cl2-01}
       secret: ${KEYCLOAK_CLIENT_SECRET:xxxxx}
       tokenUrl: ${AUTH_SERVER_TOKEN_URL:https://localhost:8000/auth/realms/CX-Central/protocol/openid-connect/token}
+  retryCount: ${RETRY_COUNT:5}

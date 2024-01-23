@@ -43,7 +43,7 @@ public class DummyController {
     @PostMapping("/api/v1/compliance")
     public void mockCompliance(@RequestParam("externalId") String externalId,@RequestBody Map<String,Object> map ) throws InterruptedException {
         Thread.sleep(10000L);
-        dummyService.portalCallBackRegistration(externalId,map);
+        dummyService.portalCallBackRegistration(externalId,map,0);
     }
 
 }
