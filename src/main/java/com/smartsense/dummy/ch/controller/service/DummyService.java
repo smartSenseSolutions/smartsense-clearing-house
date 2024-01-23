@@ -87,7 +87,7 @@ public class DummyService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        //headers.setBearerAuth(generateToken());
+        headers.setBearerAuth(generateToken());
         try {
             HttpEntity<Object> requestEntity = new HttpEntity<>(responseData, headers);
 
