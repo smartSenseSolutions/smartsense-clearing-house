@@ -33,16 +33,15 @@ public class DummyController {
     @Autowired
     private DummyService dummyService;
 
+
     @PostMapping("/api/v1/validation")
     public void mockValidation(@RequestBody Map<String,Object> map) throws InterruptedException {
         log.info("==> Request : Params:{}",map);
-        Thread.sleep(10000L);
         dummyService.callBack(map);
     }
 
     @PostMapping("/api/v1/compliance")
     public void mockCompliance(@RequestParam("externalId") String externalId,@RequestBody Map<String,Object> map ) throws InterruptedException {
-        Thread.sleep(10000L);
         dummyService.portalCallBackRegistration(externalId,map,0);
     }
 
