@@ -2,6 +2,9 @@
 
 This repository contains a small Spring Boot-based dummy implementation of a clearing house used in CX data-space. It implements two lightweight HTTP endpoints that simulate portal callbacks and self-description registration for external systems.
 
+
+Portal compatible version: 2.6.0
+
 ---
 
 **Key points**
@@ -53,23 +56,51 @@ This repository contains a small Spring Boot-based dummy implementation of a cle
 
 ```json
 {
-  "callbackUrl": "https://portal.example.com/api/validate/callback",
-  "participantDetails": {
-    "bpn": "BPN123456"
+  "legalEntity": {
+    "legalName": "Company Name",
+    "address": {
+      "country": "DE",
+      "region": "DE-BW",
+      "locality": "Munich",
+      "postalCode": "80331",
+      "addressLine": "Main Street 123"
+    },
+    "identifiers": [
+      {
+        "type": "schema:vatID",
+        "value": "DE123456789"
+      },
+      {
+        "type": "schema:taxID",
+        "value": "HRB123456"
+      }
+    ]
+  },
+  "validationMode": "LEGAL_NAME",
+  "callback": {
+    "url": "https://portal.example.org/api/administration/registration/clearinghouse",
+    "headers": {
+      "Business-Partner-Number": "BPNL00000003CRHK"
+    }
   }
 }
 ```
 
 **Outbound callback (POST to callbackUrl)**
 - Method: POST
-- Headers: Content-Type: application/json, Authorization: Bearer <access_token>
+- Headers: Content-Type: application/json, Authorization: Bearer <access_token>, Business-Partner-Number: BPN from the above request body
 - Body (JSON):
 
 ```json
 {
-  "bpn": "BPN123456",
-  "status": "CONFIRM",
-  "message": "SUccess"
+  "validationMode": "COMPLETED",
+  "validationUnits": [
+    {
+      "result": "VALID",
+      "type": "vatId",
+      "reason": null
+    }
+  ]
 }
 ```
 
