@@ -47,18 +47,32 @@ public class DummyService {
     @Async
     public void callBack(Map<String, Object> map) throws InterruptedException {
         DummyService.log.info("==> Request : CallBack execute:");
-        String callBack = map.get("callbackUrl") + "";
-        Map<String, Object> participantDetailsMap = (Map<String, Object>) map.get("participantDetails");
-        String bpn = participantDetailsMap.get("bpn") + "";
-        callBackForValidation(bpn, callBack, 0);
+        Map<String, Object> callBack = (Map<String, Object>) map.get("callback");
+        String callbackUrl = callBack.get("url").toString();
+        Map<String, Object> participantDetailsMap = (Map<String, Object>) callBack.get("headers");
+        String bpn = participantDetailsMap.get("Business-Partner-Number") + "";
+        callBackForValidation(bpn, callbackUrl, 0);
     }
 
+    @Async
     public void callBackForValidation(String bpn, String callBack, int currentRetry) throws InterruptedException {
         try {
+            Thread.sleep(5000L);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.setBearerAuth(generateToken());
-            ClearinghouseResponseData callBackResponse = new ClearinghouseResponseData(bpn, ClearinghouseResponseStatus.CONFIRM, "SUccess");
+            headers.set("Business-Partner-Number", bpn);
+
+            ClearinghouseResponseData callBackResponse = ClearinghouseResponseData.builder()
+                    .validationMode("COMPLETED")
+                    .validationUnits(List.of(
+                            ClearinghouseResponseData.ValidationUnit.builder()
+                                    .result("VALID")
+                                    .type("vatId")
+                                    .reason(null)
+                                    .build()
+                    ))
+                    .build();
 
             HttpEntity<Object> requestEntity = new HttpEntity<>(callBackResponse, headers);
             ResponseEntity<Object> exchange = restTemplate.exchange(callBack, HttpMethod.POST, requestEntity, Object.class);
